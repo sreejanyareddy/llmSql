@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SQL Query Generator</title>
+</head>
+<body>
+    <h1>SQL Query Generator</h1>
+    <form method="post">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit">Generate SQL</button>
+    </form>
+    {% if sql_query %}
+        <h3>Generated SQL Query:</h3>
+        <pre>{{ sql_query }}</pre>
+    {% elif sql_query is not None %}
+        <h3>Error Generating SQL Query</h3>
+    {% endif %}
+</body>
+</html>

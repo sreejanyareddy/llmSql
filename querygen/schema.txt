@@ -1,0 +1,28 @@
+-- Table: students
+CREATE TABLE students (
+    student_id SERIAL PRIMARY KEY,
+    name TEXT NOT NULL,
+    branch TEXT NOT NULL,
+    cgpa NUMERIC(3, 2),
+    graduation_year INT,
+    dob DATE                  -- New: date of birth
+);
+
+-- Table: companies
+CREATE TABLE companies (
+    company_id SERIAL PRIMARY KEY,
+    company_name TEXT NOT NULL,
+    domain TEXT,              -- e.g., "ml", "software", "finance"
+    visit_month TEXT,         -- e.g., "march"
+    offer_range TEXT          -- e.g., "10-20lpa", "20+lpa"
+);
+
+-- Table: offers
+CREATE TABLE offers (
+    offer_id SERIAL PRIMARY KEY,
+    student_id INT REFERENCES students(student_id),
+    company_id INT REFERENCES companies(company_id),
+    ctc NUMERIC(6, 2),        -- in LPA
+    role TEXT,
+    offer_date DATE
+);

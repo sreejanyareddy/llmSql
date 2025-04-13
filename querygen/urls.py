@@ -1,6 +1,11 @@
 from django.urls import path
-from .views import index
+from . import views
+
 
 urlpatterns = [
-    path('', index, name='index'),
+    path('', views.home, name=''),
+    path('generate_sql', views.generate_sql, name='index'),
+    path('query_db',views.query_db,name= 'query_db')
+
+    
 ]

@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SQL Query Generator</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+</head>
+<body>
+    <div class="container">
+        <h1 class="mt-5">Generate and Execute SQL Query</h1>
+        
+        <form method="POST" class="mt-4">
+            {% csrf_token %}
+            <div class="form-group">
+                <label for="user_text">Enter Your Query:</label>
+                {{ form.user_text }}
+            </div>
+            <div class="form-group">
+                <label for="temperature">Temperature:</label>
+                {{ form.temperature }}
+            </div>
+            <button type="submit" class="btn btn-primary">Generate SQL Query</button>
+        </form>
+
+        {% if sql_query %}
+            <div class="mt-5">
+                <h3>Generated SQL Query:</h3>
+                <pre>{{ sql_query }}</pre>
+            </div>
+        {% endif %}
+
+        {% if rows %}
+            <div class="mt-5">
+                <h3>Query Result:</h3>
+                <table class="table table-bordered">
+                    <thead>
+                        <tr>
+                            {% for col in colnames %}
+                                <th>{{ col }}</th>
+                            {% endfor %}
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for row in rows %}
+                            <tr>
+                                {% for cell in row %}
+                                    <td>{{ cell }}</td>
+                                {% endfor %}
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        {% elif rows is not empty %}
+            <div class="mt-5">
+                <p>No results returned.</p>
+            </div>
+        {% endif %}
+
+        {% if messages %}
+            <div class="mt-5">
+                {% for message in messages %}
+                    <div class="alert alert-danger">{{ message }}</div>
+                {% endfor %}
+            </div>
+        {% endif %}
+    </div>
+    
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.3/dist/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</body>
+</html>

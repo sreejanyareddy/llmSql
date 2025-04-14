@@ -4,71 +4,205 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>SQL Query Generator</title>
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            padding: 60px;
+            background-color: #e8f5e9;
+            text-align: center;
+        }
+
+        h1 {
+            color: #2e7d32;
+            font-size: 36px;
+            margin-bottom: 30px;
+        }
+
+        form {
+            background-color: #fff;
+            border-radius: 8px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+            padding: 30px;
+            max-width: 500px;
+            margin: 0 auto;
+        }
+
+        label {
+            display: block;
+            font-weight: bold;
+            text-align: left;
+            margin-top: 10px;
+        }
+
+        input[type="text"],
+        input[type="number"],
+        textarea,
+        select {
+            width: 100%;
+            padding: 15px;
+            margin: 15px 0;
+            border: 2px solid #ccc;
+            border-radius: 6px;
+            font-size: 18px;
+            box-sizing: border-box;
+            transition: border-color 0.3s, box-shadow 0.3s;
+        }
+
+        input[type="text"]:focus,
+        input[type="number"]:focus,
+        textarea:focus,
+        select:focus {
+            border-color: #2e7d32;
+            outline: none;
+            box-shadow: 0 0 5px rgba(46, 125, 50, 0.5);
+        }
+
+        button {
+            background-color: #4CAF50;
+            color: white;
+            padding: 15px;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+            width: 100%;
+            font-size: 18px;
+        }
+
+        button:hover {
+            background-color: #45a049;
+        }
+
+        .output {
+            margin-top: 30px;
+            background-color: #f1f8f4;
+            border: 2px solid #c8e6c9;
+            border-radius: 8px;
+            padding: 20px;
+            text-align: left;
+            font-size: 18px;
+            max-width: 900px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .output h3 {
+            color: #2e7d32;
+            margin-bottom: 15px;
+        }
+
+        pre {
+            background-color: #fff;
+            border: 1px solid #ddd;
+            padding: 20px;
+            border-radius: 8px;
+            overflow-x: auto;
+            font-size: 18px;
+            font-family: 'Courier New', Courier, monospace;
+            margin-top: 10px;
+            min-height: 80px;
+            min-width: 90%;
+            max-width: 100%;
+        }
+
+        .error {
+            color: red;
+            font-size: 18px;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 30px;
+        }
+
+        table, th, td {
+            border: 2px solid #ccc;
+        }
+
+        th, td {
+            padding: 12px;
+            text-align: left;
+            font-size: 18px;
+        }
+
+        .alert {
+            color: red;
+            font-weight: bold;
+            margin-top: 20px;
+        }
+
+        .back-button {
+            display: inline-block;
+            background-color: #388e3c;
+            color: white;
+            padding: 12px 25px;
+            text-decoration: none;
+            border-radius: 6px;
+            font-size: 18px;
+            margin-top: 30px;
+            transition: background-color 0.3s;
+        }
+
+        .back-button:hover {
+            background-color: #2e7d32;
+        }
+    </style>
 </head>
 <body>
-    <div class="container">
-        <h1 class="mt-5">Generate and Execute SQL Query</h1>
-        
-        <form method="POST" class="mt-4">
-            {% csrf_token %}
-            <div class="form-group">
-                <label for="user_text">Enter Your Query:</label>
-                {{ form.user_text }}
-            </div>
-            <div class="form-group">
-                <label for="temperature">Temperature:</label>
-                {{ form.temperature }}
-            </div>
-            <button type="submit" class="btn btn-primary">Generate SQL Query</button>
-        </form>
+    <h1>Generate and Execute SQL Query</h1>
+    <form method="POST">
+        {% csrf_token %}
+        <label for="user_text">Enter Your Query:</label>
+        {{ form.user_text }}
+        <label for="temperature">Temperature:</label>
+        {{ form.temperature }}
+        <button type="submit">Generate SQL Query</button>
+    </form>
 
-        {% if sql_query %}
-            <div class="mt-5">
-                <h3>Generated SQL Query:</h3>
-                <pre>{{ sql_query }}</pre>
-            </div>
-        {% endif %}
+    {% if sql_query %}
+        <div class="output">
+            <h3>Generated SQL Query:</h3>
+            <pre>{{ sql_query }}</pre>
+        </div>
+    {% endif %}
 
-        {% if rows %}
-            <div class="mt-5">
-                <h3>Query Result:</h3>
-                <table class="table table-bordered">
-                    <thead>
+    {% if rows %}
+        <div class="output">
+            <h3>Query Result:</h3>
+            <table>
+                <thead>
+                    <tr>
+                        {% for col in colnames %}
+                            <th>{{ col }}</th>
+                        {% endfor %}
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for row in rows %}
                         <tr>
-                            {% for col in colnames %}
-                                <th>{{ col }}</th>
+                            {% for cell in row %}
+                                <td>{{ cell }}</td>
                             {% endfor %}
                         </tr>
-                    </thead>
-                    <tbody>
-                        {% for row in rows %}
-                            <tr>
-                                {% for cell in row %}
-                                    <td>{{ cell }}</td>
-                                {% endfor %}
-                            </tr>
-                        {% endfor %}
-                    </tbody>
-                </table>
-            </div>
-        {% elif rows is not empty %}
-            <div class="mt-5">
-                <p>No results returned.</p>
-            </div>
-        {% endif %}
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    {% elif rows is not empty %}
+        <div class="output">
+            <p>No results returned.</p>
+        </div>
+    {% endif %}
 
-        {% if messages %}
-            <div class="mt-5">
-                {% for message in messages %}
-                    <div class="alert alert-danger">{{ message }}</div>
-                {% endfor %}
-            </div>
-        {% endif %}
-    </div>
-    
-    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.3/dist/umd/popper.min.js"></script>
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    {% if messages %}
+        <div class="output error">
+            {% for message in messages %}
+                <div class="alert">{{ message }}</div>
+            {% endfor %}
+        </div>
+    {% endif %}
+
+    <a href="/" class="back-button">Back to Home</a>
 </body>
 </html>

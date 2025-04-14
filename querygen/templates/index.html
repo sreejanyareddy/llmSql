@@ -4,6 +4,125 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>SQL Query Generator</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            padding: 60px;
+            background-color: #e8f5e9;
+            text-align: center;
+        }
+
+        h1 {
+            color: #2e7d32;
+            font-size: 36px;
+            margin-bottom: 30px;
+        }
+
+        form {
+            background-color: #fff;
+            border-radius: 8px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+            padding: 30px;
+            max-width: 500px;
+            margin: 0 auto;
+        }
+
+        label {
+            display: block;
+            font-weight: bold;
+            text-align: left;
+            margin-top: 10px;
+        }
+
+        input[type="text"],
+        input[type="number"],
+        textarea,
+        select {
+            width: 100%;
+            padding: 15px;
+            margin: 15px 0;
+            border: 2px solid #ccc;
+            border-radius: 6px;
+            font-size: 18px;
+            box-sizing: border-box;
+            transition: border-color 0.3s, box-shadow 0.3s;
+        }
+
+        input[type="text"]:focus,
+        input[type="number"]:focus,
+        textarea:focus,
+        select:focus {
+            border-color: #2e7d32;
+            outline: none;
+            box-shadow: 0 0 5px rgba(46, 125, 50, 0.5);
+        }
+
+        button {
+            background-color: #4CAF50;
+            color: white;
+            padding: 15px;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+            width: 100%;
+            font-size: 18px;
+        }
+
+        button:hover {
+            background-color: #45a049;
+        }
+
+        .output {
+            max-width: 900px;
+            margin: 30px auto 0 auto;
+            background-color: #f1f8f4;
+            border: 2px solid #c8e6c9;
+            border-radius: 8px;
+            padding: 20px;
+            text-align: left;
+        }
+
+        .output h3 {
+            color: #2e7d32;
+            margin-bottom: 10px;
+        }
+
+        pre {
+            background-color: #fff;
+            border: 1px solid #ddd;
+            padding: 20px;
+            border-radius: 8px;
+            overflow-x: auto;
+            font-size: 18px;
+            font-family: 'Courier New', Courier, monospace;
+            margin-top: 10px;
+            min-height: 80px;
+            min-width: 90%;
+            max-width: 100%;
+        }
+
+        .error {
+            color: red;
+            font-size: 18px;
+        }
+
+        .back-button {
+            display: inline-block;
+            background-color: #388e3c;
+            color: white;
+            padding: 12px 25px;
+            text-decoration: none;
+            border-radius: 6px;
+            font-size: 18px;
+            margin-top: 30px;
+            transition: background-color 0.3s;
+        }
+
+        .back-button:hover {
+            background-color: #2e7d32;
+        }
+    </style>
 </head>
 <body>
     <h1>SQL Query Generator</h1>
@@ -12,11 +131,18 @@
         {{ form.as_p }}
         <button type="submit">Generate SQL</button>
     </form>
+
     {% if sql_query %}
-        <h3>Generated SQL Query:</h3>
-        <pre>{{ sql_query }}</pre>
+        <div class="output">
+            <h3>Generated SQL Query:</h3>
+            <pre>{{ sql_query }}</pre>
+        </div>
     {% elif sql_query is not None %}
-        <h3>Error Generating SQL Query</h3>
+        <div class="output error">
+            <h3>Error Generating SQL Query</h3>
+        </div>
     {% endif %}
+
+    <a href="/" class="back-button">Back to Home</a>
 </body>
 </html>

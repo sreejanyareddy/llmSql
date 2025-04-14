@@ -6,33 +6,61 @@
     <style>
         body {
             font-family: Arial, sans-serif;
-            padding: 40px;
-            background-color: #f5f5f5;
+            padding: 60px 20px;
+            background-color: #e8f5e9;
             text-align: center;
         }
 
         h1 {
-            color: #333;
+            color: #2e7d32;
+            font-size: 42px;
+            margin-bottom: 50px;
+            letter-spacing: 1px;
         }
 
         .options {
-            margin-top: 50px;
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 40px;
+        }
+
+        .option-box {
+            background-color: #fff;
+            border-radius: 12px;
+            box-shadow: 0 6px 16px rgba(0, 0, 0, 0.1);
+            padding: 30px 25px;
+            width: 320px;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .option-box:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.15);
         }
 
         .option-button {
             background-color: #4CAF50;
             color: white;
-            padding: 20px 40px;
-            margin: 20px;
+            padding: 15px 20px;
             border: none;
             border-radius: 8px;
             font-size: 18px;
             cursor: pointer;
-            transition: background-color 0.3s;
+            transition: background-color 0.3s, transform 0.2s;
+            width: 100%;
         }
 
         .option-button:hover {
             background-color: #45a049;
+            transform: translateY(-2px);
+        }
+
+        .description {
+            margin-top: 20px;
+            font-size: 17px;
+            color: #555;
+            line-height: 1.6;
         }
     </style>
 </head>
@@ -41,8 +69,15 @@
     <h1>Welcome to SQL Assistant</h1>
 
     <div class="options">
-        <button class="option-button" onclick="location.href= 'query_db'" >Query in Our Database</button>
-        <button class="option-button" onclick="location.href= 'generate_sql' ">Generate SQL Query</button>
+        <div class="option-box">
+            <button class="option-button" onclick="location.href='query_db'">Query in Our Database</button>
+            <p class="description">Input your text and select a temperature value to run SQL queries on our database and see the results directly.</p>
+        </div>
+
+        <div class="option-box">
+            <button class="option-button" onclick="location.href='generate_sql'">Generate SQL Query</button>
+            <p class="description">Provide your input and temperature to generate a well-structured SQL query tailored to your prompt.</p>
+        </div>
     </div>
 
 </body>
